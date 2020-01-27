@@ -9,8 +9,8 @@ import Amplify, { Auth } from 'aws-amplify';
 // Amplify.configure({
 //   Auth: {
 //     // region: "us-east-1",
-//     // userPoolId: 'us-east-1_rzZ9TfswJ',
-//     userPoolWebClientId: '6oltrs2uq21gice7sjj4asl6ve',
+//     // userPoolId: 'userpool-id',
+//     userPoolWebClientId: 'passwordless-app-client-id',
 //   }
 // });
 

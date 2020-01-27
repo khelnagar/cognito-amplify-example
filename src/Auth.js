@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { Auth } from 'aws-amplify';
 
 var AWS = require('aws-sdk');
-AWS.config.region = 'us-east-1';
+AWS.config.region = 'your-region';
 
 function scanData() {
-    var dynamodb = new AWS.DynamoDB({region: 'us-east-1'});    
+    var dynamodb = new AWS.DynamoDB({region: 'your-region'});    
     dynamodb.scan({TableName: "products"}, onScan);
 
     function onScan(err, data) {
@@ -33,9 +33,9 @@ export default function AuthView(props) {
   		let token = user.signInUserSession.idToken.jwtToken;
       let userPoolId = user.pool.userPoolId;
   		AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  		  IdentityPoolId: 'us-east-1:ab0fd5fa-1842-4732-82a6-be503fea4037',
+  		  IdentityPoolId: 'identity-pool-id',
   		  Logins: { // optional tokens, used for authenticated login
-  		      [`cognito-idp.us-east-1.amazonaws.com/${userPoolId}`]: token
+  		      [`cognito-idp.your-region.amazonaws.com/${userPoolId}`]: token
   		  }
   		});
     	scanData();

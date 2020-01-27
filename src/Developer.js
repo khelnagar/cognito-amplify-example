@@ -2,10 +2,10 @@ import React, { useState, useReducer } from 'react';
 
 // Load the AWS SDK for Node.js
 var AWS = require('aws-sdk');
-AWS.config.region = 'us-east-1';
+AWS.config.region = 'your-region';
 
 function scanData() {
-    var dynamodb = new AWS.DynamoDB({region: 'us-east-1'});    
+    var dynamodb = new AWS.DynamoDB({region: 'your-region'});    
     dynamodb.scan({TableName: "products"}, onScan);
 
     function onScan(err, data) {
@@ -53,7 +53,7 @@ async function getUserIdToken(url, credentials) {
 async function signIn({ username, password }) {
   try {
     // calll lambda function thru api gateway with the username and password
-    let apiEndpoint = 'https://00jg1sy3rd.execute-api.us-east-1.amazonaws.com/prod/developer-auth';
+    let apiEndpoint = 'https://api-id.execute-api.us-east-1.amazonaws.com/prod/developer-auth';
     let credentials = {
       username: username,
       password: password
@@ -64,7 +64,7 @@ async function signIn({ username, password }) {
       let token = response.token;
 
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-east-1:ab0fd5fa-1842-4732-82a6-be503fea4037',
+        IdentityPoolId: 'identity-pool-id',
         IdentityId: identityId,
         Logins: { 
           'cognito-identity.amazonaws.com': token

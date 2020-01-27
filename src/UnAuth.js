@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 // Load the AWS SDK for Node.js
 var AWS = require('aws-sdk');
-AWS.config.region = 'us-east-1';
+AWS.config.region = 'your-region';
 
 var cognitoidentity = new AWS.CognitoIdentity({
 });
@@ -27,7 +27,7 @@ function getCredentials() {
     });
     return credentials // promise object
   } else {
-    let identityId = getIdForUnAuth('us-east-1:ab0fd5fa-1842-4732-82a6-be503fea4037').then(data => {
+    let identityId = getIdForUnAuth('identity-pool-id').then(data => {
       // not to always generate a new unauth identity for same person
       localStorage.setItem('unAuthId', data.IdentityId); 
       return data.IdentityId

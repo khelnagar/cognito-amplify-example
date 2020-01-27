@@ -11,6 +11,8 @@ exports.handler = async (event = {}) => {
     if (event.callerContext.clientId === 'client-id') {
         let secretLoginCode;
         if (!event.request.session || !event.request.session.length) {
+            // you can create the user pool with email as username to restrict the userName to
+            // be only valid email, for this flow to succeed
             var email = event.userName;
             // This is a new auth session
             // Generate a new secret login code and text it to the user

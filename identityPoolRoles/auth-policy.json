@@ -1,0 +1,17 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowAccessToOnlyAttributes",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:Scan"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:region:account-id:table/products",
+                "arn:aws:dynamodb:region:account-id:table/prices"
+            ]
+        }
+    ]
+}

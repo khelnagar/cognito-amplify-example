@@ -12,7 +12,7 @@ Installs all the dependencies required to run the app
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## For full application experience
+## Full Application Experience
 
 In order to run the application and see all the functionalities, you will need to create the below resources either using Amplify ([tutorial](https://dev.to/dabit3/the-complete-guide-to-user-authentication-with-the-amplify-framework-2inh)), or create them yourself in your AWS account.
 
@@ -24,7 +24,7 @@ In order to run the application and see all the functionalities, you will need t
 	- `defineAuthChallenge_passwordless`
 	- `verifyAuthchallenge_passwordless`
 	- `preSignup_passwordless`
-4. Lambda function as a backend for the developer authentication flow as in `developer_auth_lambda`
-5. Identity pool with both user pool and custom developer as authentication providers
-6. Two IAM roles for authenticated and unauthenticated user access to the app as in `identityPoolRoles`
-7. Two DynamoDB tables which will be used as an example for auth/unauth user access to the app
+4. Identity pool with both user pool and custom developer as authentication providers. This is used to provide auth/unauth identities and issue temporary credentials for using AWS services
+5. Two IAM roles for authenticated and unauthenticated user access to the app as in `identityPoolRoles`
+6. Two DynamoDB tables which will be used as an example for auth/unauth user access to the app
+7. Lambda function as a backend for the developer authentication flow as in `developer_auth_lambda`

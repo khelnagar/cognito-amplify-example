@@ -41,7 +41,19 @@ async function confirmSignUp({ username, confirmationCode }, updateFormType) {
 
 async function signIn({ username, password }) {
   try {
-    await Auth.signIn(username, password).then(user => console.log(user))
+    await Auth.signIn(username, password).then(user => {
+      console.log(user);
+      if (user.challengeName === 'SOFTWARE_TOKEN_MFA') {
+        // You need to get the code from the UI input
+        const code = prompt('Enter your TOTP code');
+        // If MFA is enabled, sign-in should be confirmed with the confirmation code
+        Auth.confirmSignIn(
+            user,   // Return object from Auth.signIn()
+            code,   // Confirmation code  
+            'SOFTWARE_TOKEN_MFA' // MFA Type e.g. SMS_MFA, SOFTWARE_TOKEN_MFA
+        );
+      }
+    })
     console.log('sign in success!')
   } catch (err) {
     console.log('error signing up..', err)

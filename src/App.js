@@ -6,6 +6,7 @@ import FormPasswordless from './FormPasswordless';
 import UnAuth from './UnAuth';
 import AuthView from './Auth';
 import Developer from './Developer';
+import SetupMFA from './setupMFA';
 
 
 
@@ -24,6 +25,7 @@ function signOut() {
 function App(props) {
   const [authState, setAuthState] = useState('loading');
   const [passwordlessState, setPasswordlessState] = useState(false);
+  const [MFASetupState, setMFASetupState] = useState(false);
   
   useEffect(() => {
     Hub.listen('auth', (data) => {
@@ -79,7 +81,10 @@ function App(props) {
         	<div>
         		<button onClick={checkUser}>Check user</button>
         		<button onClick={signOut}>Sign out</button>
-            <AuthView />
+            <button onClick={() => setMFASetupState(!MFASetupState)}>
+              {MFASetupState ? 'Back to Auth View' : 'Setup MFA'}
+            </button>
+            {MFASetupState ? <SetupMFA /> : <AuthView /> }
         	</div>
         }
         {authState === 'guest' &&

@@ -117,14 +117,14 @@ function forgetDevice() {
   Auth.currentUserPoolUser().then(user => {
     console.log(user);
     // workaround that we get the deviceKey from storage by formulating the deviceKey key using the userData key
-    let userDataKey = user.userDataKey; // CognitoIdentityServiceProvider.2vn6mk21vq2tl2i0tpt8u3ejmv.keelnaga@amazon.com.userData
+    let userDataKey = user.userDataKey; // CognitoIdentityServiceProvider.[client_id].[username].userData
     let deviceKey = userDataKey.replace('userData', 'deviceKey');
-    console.log(deviceKey); // CognitoIdentityServiceProvider.2vn6mk21vq2tl2i0tpt8u3ejmv.keelnaga@amazon.com.deviceKey
+    console.log(deviceKey); // CognitoIdentityServiceProvider.[client_id].[username].com.deviceKey
     user.deviceKey = user.storage.getItem(deviceKey);
     user.setDeviceStatusNotRemembered({
       onSuccess: function(result) {
         console.log(result)
-        console.log(`device is forgot: ${user.deviceKey}`); // user.deviceKey is undefined
+        console.log(`device is forgot: ${user.deviceKey}`);
       },
       onFailure: function (result) {
         console.log(result)

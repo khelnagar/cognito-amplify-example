@@ -1,6 +1,7 @@
 import React, { useState, useReducer } from 'react'
-
 import { Auth } from 'aws-amplify'
+
+
 
 const initialFormState = {
   username: '', password: '', email: '', confirmationCode: ''
@@ -51,7 +52,22 @@ async function signIn({ username, password }) {
             user,   // Return object from Auth.signIn()
             code,   // Confirmation code  
             'SOFTWARE_TOKEN_MFA' // MFA Type e.g. SMS_MFA, SOFTWARE_TOKEN_MFA
-        );
+        ).then(data => {
+          const rememberDevice = window.confirm('Remember this device for MFA?');
+          if (rememberDevice) {
+            // cognitoUser returned from signIn and confirmSignIn has deviceKey
+            user.setDeviceStatusRemembered({
+              onSuccess: function(result) {
+                console.log(result);
+                console.log(`device remembered: ${user.deviceKey}`);
+              },
+              onFailure: function(result) {
+                console.log(result);
+                console.log(`failed to remember device: ${user.deviceKey}`);
+              }
+            });
+          }
+        })
       }
     })
     console.log('sign in success!')

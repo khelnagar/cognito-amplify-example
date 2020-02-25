@@ -109,6 +109,31 @@ function generateConsoleURL() {
   return urlPromise;
 }
 
+function forgetDevice() {
+  // this should work as per https://github.com/aws-amplify/amplify-js/issues/3810#issuecomment-518875090
+  // only if currentUserPoolUser returns CognitoUser as is returned from signIn() as in Form.js for remembering
+  // however the cognitoUser returned does not have device key so it is not working
+  // so we find a way to add the deviceKey to the user object
+  Auth.currentUserPoolUser().then(user => {
+    console.log(user);
+    // workaround that we get the deviceKey from storage by formulating the deviceKey key using the userData key
+    let userDataKey = user.userDataKey; // CognitoIdentityServiceProvider.2vn6mk21vq2tl2i0tpt8u3ejmv.keelnaga@amazon.com.userData
+    let deviceKey = userDataKey.replace('userData', 'deviceKey');
+    console.log(deviceKey); // CognitoIdentityServiceProvider.2vn6mk21vq2tl2i0tpt8u3ejmv.keelnaga@amazon.com.deviceKey
+    user.deviceKey = user.storage.getItem(deviceKey);
+    user.setDeviceStatusNotRemembered({
+      onSuccess: function(result) {
+        console.log(result)
+        console.log(`device is forgot: ${user.deviceKey}`); // user.deviceKey is undefined
+      },
+      onFailure: function (result) {
+        console.log(result)
+        console.log(`failed to remember device: ${user.deviceKey}`);
+      }
+    })
+  });
+}
+
 export default function AuthView(props) {
   const [urlState, setUrlState] = useState('');
 
@@ -144,6 +169,11 @@ export default function AuthView(props) {
       <a href={urlState} target="_blank" rel="noopener noreferrer" >
         Login to AWS Console
       </a>
+      <br/>
+      <br/>
+      <button onClick={() => forgetDevice()} >
+        Forget Device
+      </button>
     </div>
   )
 }

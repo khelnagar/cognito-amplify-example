@@ -29,7 +29,15 @@ In order to run the application and see all the functionalities, you will need t
 6. Two DynamoDB tables which will be used as an example for auth/unauth user access to the app
 7. Lambda function as a backend for the developer authentication flow as in `developer_auth_lambda`
 
-## Updated Funtionalites
+## Updated Functionalists
 
-1. MFA TOTP authentication flow and setup for user
+1. MFA TOTP authentication flow and device remembering
+	- You will install an authenticator on your device such as Google Authenticator
+	- Setup/link a new device on the authenticator to issue OTPs for your login flow
+	- Code for setting up the TOTP using Amplify is found in `setupMFA.js`
+	- Code for device remembering and forgetting using Amplify is found in `Form.js` and `Auth.js` respectively
 2. After signing in you will have an AWS Console session where you will interact with AWS services in the Console yourself!
+	- Code for generating this session or login URL is found in `Auth.js`
+	- This federated login session is given by AWS IAM using the AWS credentials user gets after federating with the identity pool
+	- So permissions during this session would be based on the role for authenticated users specified in `identityPoolRoles`
+	- Note that authenticated users using those federated sessions can create resources in your own account, of course if you allow them to, based on the identity pool roles they assumed

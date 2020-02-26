@@ -12,7 +12,7 @@ function scanData() {
     //     if (err) {
     //     	console.log(err)
     //     } else {
-    //         // Print all the movies
+    //         // Print all the products
     //         data.Items.forEach(function(item) {
     //           dynamodb.getItem({
     //             TableName: "prices", 
@@ -96,7 +96,7 @@ function generateConsoleURL() {
     let credentialsURLEncoded = encodeURIComponent(JSON.stringify(credentials));
     // signin.aws.amazon.com/federation endpoint does not allow cors request 
     // so offloaded the cors ability on api gateway
-    const url = `https://api-id.execute-api.us-east-1.amazonaws.com/prod/session-token?Action=getSigninToken&SessionDuration=9000&Session=${credentialsURLEncoded}`;
+    const url = `https://api-id.execute-api.us-east-1.amazonaws.com/prod/session-token?Action=getSigninToken&SessionDuration=900&Session=${credentialsURLEncoded}`;
     
     const signinUrl = fetch(url)
     .then((response) => {
@@ -121,6 +121,7 @@ function forgetDevice() {
     let deviceKey = userDataKey.replace('userData', 'deviceKey');
     console.log(deviceKey); // CognitoIdentityServiceProvider.[client_id].[username].com.deviceKey
     user.deviceKey = user.storage.getItem(deviceKey);
+    // if data is stored as cookie, not storage, the above workaround needs to change to get it from cookie
     user.setDeviceStatusNotRemembered({
       onSuccess: function(result) {
         console.log(result)

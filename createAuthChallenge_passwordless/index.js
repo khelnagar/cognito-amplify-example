@@ -14,12 +14,18 @@ exports.handler = async (event = {}) => {
             // you can create the user pool with email as username to restrict the userName to
             // be only valid email, for this flow to succeed
             var email = event.userName;
+            let validEmail = validateEmail(email);
+            console.log(`emailValid? ${validEmail}`);
+            // don't spam non-existing users
+            let userExists = !event.request.userNotFound;
             // This is a new auth session
             // Generate a new secret login code and text it to the user
             secretLoginCode = crypto_secure_random_digit.randomDigits(6).join('');
-            await sendEmail(email, secretLoginCode).then(
-                data => console.log(`email sent: ${data}`
-            ));
+            if (userExists && validEmail) {
+                await sendEmail(email, secretLoginCode).then(
+                    data => console.log(`email sent: ${data}`)
+                );
+            }
         }
         else {
             // There's an existing session. Don't generate new digits but
@@ -71,3 +77,7 @@ async function sendEmail(email, secretLoginCode) {
     return request.promise()
 }
 
+function validateEmail(email) { 
+   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   return re.test(email);
+}

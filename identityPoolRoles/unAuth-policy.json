@@ -8,6 +8,32 @@
                 "dynamodb:GetItem"
             ],
             "Resource": "arn:aws:dynamodb:region:account-id:table/products"
+        },
+        {
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::rn-amplify-*******"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "${cognito-identity.amazonaws.com:sub}"
+                    ]
+                }
+            }
+        },
+        {
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::rn-amplify-*******/${cognito-identity.amazonaws.com:sub}/*"
+            ]
         }
     ]
 }

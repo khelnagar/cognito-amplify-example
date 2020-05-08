@@ -41,3 +41,8 @@ In order to run the application and see all the functionalities, you will need t
 	- This federated login session is given by AWS IAM using the AWS credentials user gets after federating with the identity pool
 	- So permissions during this session would be based on the role for authenticated users specified in `identityPoolRoles`
 	- Note that authenticated users using those federated sessions can create resources in your own account, of course if you allow them to, based on the identity pool roles they assumed
+3. Restrict read/write access to a private S3 bucket using the AWS credentials
+	- Code for put object and list objects is found in `Auth.js`
+	- Updated policies for auth/unauth roles for S3 are found in `identityPoolRoles`
+4. Federation with the identity pool directly with Facebook and Google
+	- Code is found in `FederateFacebook.js` and `FederateGoogle.js`

@@ -52,6 +52,58 @@ function scanData() {
     })
 }
 
+function uploadObject(event) {
+  let file = event.target.files[0];
+  console.log(file)
+
+  // this populates credentials for auth/unauth
+  Auth.currentCredentials()
+  .then(cred => {
+    const folder = cred.identityId;
+    const fileName = file.name;
+
+    // using S3 directly
+    var s3 = new AWS.S3({
+        region: 'us-east-1', 
+        credentials: Auth.essentialCredentials(cred)
+    });
+    var params = {
+      Bucket: 'rn-amplify-******',
+      Key: `${folder}/${fileName}`,
+      Body: file // file stream
+    };
+    s3.putObject(params, function (err, data) {
+      if (err) {
+        console.log("Error", err);
+      } if (data) {
+        console.log("Upload Success", data);
+      }
+    });
+  })
+}
+
+function getObjects() {
+  // this populates credentials for auth/unauth
+  Auth.currentCredentials()
+  .then(cred => {
+    const folder = cred.identityId;
+    
+    // using S3 directly
+    var s3 = new AWS.S3({
+        region: 'us-east-1', 
+        credentials: Auth.essentialCredentials(cred)
+    });
+    var paramss = {
+      Bucket: 'rn-amplify-*******',
+      Prefix: folder
+    };
+    s3.listObjects(paramss, function(err, data) {
+      if (err) console.log(err, err.stack); // an error occurred
+      else     console.log(data.Contents);           // successful response
+    });
+  })
+}
+
 function generateConsoleURL() {
   // Make the call to obtain credentials
   // const credPromise = () => {
@@ -77,7 +129,7 @@ function generateConsoleURL() {
   //   let credentialsURLEncoded = encodeURIComponent(JSON.stringify(cred));
   //   // signin.aws.amazon.com/federation endpoint does not allow cors request 
   //   // so offloaded the cors ability on api gateway
-  //   const url = `https://00jg1sy3rd.execute-api.us-east-1.amazonaws.com/prod/session-token?Action=getSigninToken&SessionDuration=9000&Session=${credentialsURLEncoded}`;
+  //   const url = `https://api-id.execute-api.us-east-1.amazonaws.com/prod/session-token?Action=getSigninToken&SessionDuration=9000&Session=${credentialsURLEncoded}`;
     
   //   const signinUrl = fetch(url)
   //   .then((response) => {
@@ -174,6 +226,14 @@ export default function AuthView(props) {
       <br/>
       <button onClick={() => forgetDevice()} >
         Forget Device
+      </button>
+      <br/>
+      <br/>
+      <input type="file" name="file" onChange={uploadObject}/>
+      <br/>
+      <br/>
+      <button onClick={() => getObjects()} >
+        List Images from Bucket
       </button>
     </div>
   )

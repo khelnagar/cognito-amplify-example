@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Auth } from 'aws-amplify';
 
 // Load the AWS SDK for Node.js
 var AWS = require('aws-sdk');
@@ -72,9 +73,14 @@ function scanData(credentials) {
 
 export default function UnAuth (props) {
   useEffect(() => {
-    getCredentials().then(credentials => {
-      scanData(credentials);
-    })
+    // getCredentials().then(credentials => {
+    //   scanData(credentials);
+    // });
+
+    // two lines using Amplify Auth for unauthenticated access
+    Auth.currentCredentials().then(cred => {
+      scanData(Auth.essentialCredentials(cred))
+    });
   }, [])
 
   return (

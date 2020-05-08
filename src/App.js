@@ -6,6 +6,8 @@ import FormPasswordless from './FormPasswordless';
 import UnAuth from './UnAuth';
 import AuthView from './Auth';
 import Developer from './Developer';
+import Google from './FederateGoogle';
+import Facebook from './FederateFacebook';
 import SetupMFA from './setupMFA';
 
 
@@ -71,9 +73,14 @@ function App(props) {
               Continue as a guest
             </button>
             <button onClick={() => setAuthState('developer')}>
-              Developer Authentication
+              Identity Pool Developer Federation
             </button>
-
+            <button onClick={() => setAuthState('google')}>
+              Identity Pool Google Federation
+            </button>
+            <button onClick={() => setAuthState('facebook')}>
+              Identity Pool Facebook Federation
+            </button>
             {passwordlessState ? <FormPasswordless /> : <Form />}
         	</div>
         }
@@ -102,6 +109,26 @@ function App(props) {
                 Login with Cognito
               </button>
             <Developer />
+          </div>
+          </div>
+        }
+        {authState === 'google' &&
+          <div>
+            <div>
+              <button onClick={() => setAuthState('signIn')}>
+                Login with Cognito User Pool
+              </button>
+            <Google />
+          </div>
+          </div>
+        }
+        {authState === 'facebook' &&
+          <div>
+            <div>
+              <button onClick={() => setAuthState('signIn')}>
+                Login with Cognito User Pool
+              </button>
+            <Facebook />
           </div>
           </div>
         }
